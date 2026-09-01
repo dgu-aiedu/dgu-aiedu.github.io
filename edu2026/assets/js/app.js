@@ -7,14 +7,12 @@ let currentFilter = "all"; // 'all' | 'ready'
 let searchQuery = "";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // 해시 라우팅 처리 (#ai-datascience 등)
   const hash = window.location.hash.replace("#", "");
   const foundCourse = COURSES_DATA.find(c => c.id === hash);
   if (foundCourse) {
     currentCourseId = foundCourse.id;
   }
 
-  // 상단 탭 및 과목 렌더링
   renderCourseTabs();
   renderCurrentCourse();
   setupEventListeners();
@@ -24,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// 해시 변경 감지
 window.addEventListener("hashchange", () => {
   const hash = window.location.hash.replace("#", "");
   const foundCourse = COURSES_DATA.find(c => c.id === hash);
@@ -33,9 +30,6 @@ window.addEventListener("hashchange", () => {
   }
 });
 
-/**
- * 상단 과목 선택 탭 렌더링
- */
 function renderCourseTabs() {
   const tabContainer = document.getElementById("course-tabs");
   if (!tabContainer) return;
@@ -73,9 +67,6 @@ function renderCourseTabs() {
   }
 }
 
-/**
- * 과목 전환
- */
 function switchCourse(courseId) {
   if (currentCourseId === courseId) return;
   currentCourseId = courseId;
@@ -95,9 +86,6 @@ function switchCourse(courseId) {
   }
 }
 
-/**
- * 현재 선택된 과목 전체 렌더링
- */
 function renderCurrentCourse() {
   const course = COURSES_DATA.find(c => c.id === currentCourseId);
   if (!course) return;
@@ -111,9 +99,6 @@ function renderCurrentCourse() {
   }
 }
 
-/**
- * 과목 헤더 렌더링
- */
 function renderCourseHeader(course) {
   const headerContainer = document.getElementById("course-header-info");
   if (!headerContainer) return;
@@ -156,9 +141,6 @@ function renderCourseHeader(course) {
   `;
 }
 
-/**
- * 공지사항 섹션 렌더링
- */
 function renderNotices(course) {
   const noticesContainer = document.getElementById("course-notices-list");
   if (!noticesContainer) return;
@@ -203,15 +185,15 @@ function renderNotices(course) {
   }).join("");
 }
 
-/**
- * 주차별 강의자료 섹션 렌더링
- */
 function renderWeeklyMaterials(course) {
   const materialsContainer = document.getElementById("weekly-materials-list");
   if (!materialsContainer) return;
 
   let filteredWeeks = course.weeks.filter(w => {
-    const isReady = w.status === "ready" || (w.files && w.files.length > 0);
+    const hasFiles = w.files && w.files.length > 0;
+    const hasLinks = w.links && w.links.length > 0;
+    const isReady = hasFiles || hasLinks;
+
     if (currentFilter === "ready" && !isReady) return false;
     
     if (searchQuery.trim() !== "") {
@@ -237,7 +219,7 @@ function renderWeeklyMaterials(course) {
   materialsContainer.innerHTML = filteredWeeks.map(w => {
     const hasFiles = w.files && w.files.length > 0;
     const hasLinks = w.links && w.links.length > 0;
-    const isReady = w.status === "ready" || hasFiles || hasLinks;
+    const isReady = hasFiles || hasLinks;
 
     return `
       <div class="week-card bg-white rounded-xl border ${isReady ? 'border-slate-300 shadow-sm' : 'border-slate-200/70 bg-slate-50/40'} p-4 sm:p-5 transition-all">
@@ -262,10 +244,10 @@ function renderWeeklyMaterials(course) {
             ${
               isReady
                 ? `<span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 자료 다운로드
+                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 자료 다운로드 가능
                    </span>`
                 : `<span class="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200">
-                    <i data-lucide="clock-3" class="w-3.5 h-3.5"></i> 준비 중
+                    <i data-lucide="clock-3" class="w-3.5 h-3.5"></i> 자료 준비 중
                    </span>`
             }
           </div>
@@ -292,7 +274,7 @@ function renderWeeklyMaterials(course) {
                           download 
                           class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50 hover:bg-orange-50 hover:border-orange-200 border border-slate-200 text-xs font-medium text-slate-700 hover:text-orange-600 transition-colors group shadow-2xs"
                         >
-                          <i data-lucide="${getFileIcon(file.type)}" class="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform"></i>
+                          <i data-lucide="${detectFileIcon(file.path, file.type)}" class="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform"></i>
                           <span class="truncate max-w-[200px] sm:max-w-[280px]">${file.name}</span>
                           <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-600 group-hover:bg-orange-200 group-hover:text-orange-800 font-mono">${file.size || 'FILE'}</span>
                         </a>
@@ -308,7 +290,7 @@ function renderWeeklyMaterials(course) {
                           rel="noopener noreferrer" 
                           class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-xs font-medium text-blue-700 transition-colors shadow-2xs"
                         >
-                          <i data-lucide="${getLinkIcon(link.type)}" class="w-4 h-4 text-blue-600"></i>
+                          <i data-lucide="${detectLinkIcon(link.url, link.type)}" class="w-4 h-4 text-blue-600"></i>
                           <span>${link.title}</span>
                           <i data-lucide="external-link" class="w-3 h-3 text-blue-400"></i>
                         </a>
@@ -332,27 +314,32 @@ function renderWeeklyMaterials(course) {
   }).join("");
 }
 
-function getFileIcon(type) {
-  switch (type) {
-    case "pdf": return "file-text";
-    case "code":
-    case "ipynb":
-    case "py": return "file-code-2";
-    case "zip":
-    case "data": return "archive";
-    case "ppt":
-    case "pptx": return "presentation";
-    default: return "file-down";
+function detectFileIcon(path = "", explicitType) {
+  if (explicitType) {
+    switch (explicitType) {
+      case "pdf": return "file-text";
+      case "code":
+      case "ipynb":
+      case "py": return "file-code-2";
+      case "zip":
+      case "data": return "archive";
+      case "ppt":
+      case "pptx": return "presentation";
+    }
   }
+  const lower = path.toLowerCase();
+  if (lower.endsWith(".pdf")) return "file-text";
+  if (lower.endsWith(".ipynb") || lower.endsWith(".py")) return "file-code-2";
+  if (lower.endsWith(".zip") || lower.endsWith(".tar") || lower.endsWith(".gz")) return "archive";
+  if (lower.endsWith(".ppt") || lower.endsWith(".pptx")) return "presentation";
+  return "file-down";
 }
 
-function getLinkIcon(type) {
-  switch (type) {
-    case "colab": return "play-circle";
-    case "docs": return "book-open";
-    case "github": return "github";
-    default: return "link";
-  }
+function detectLinkIcon(url = "", explicitType) {
+  if (explicitType === "colab" || url.includes("colab.research.google.com")) return "play-circle";
+  if (explicitType === "github" || url.includes("github.com")) return "github";
+  if (explicitType === "docs") return "book-open";
+  return "link";
 }
 
 function setupEventListeners() {

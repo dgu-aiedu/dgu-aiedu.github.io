@@ -1,37 +1,16 @@
 /**
  * 동국대학교 교육대학원 2026학년도 강의자료 데이터
  * 
- * [자료 업데이트 방법]
- * 1. 공지사항: notices 배열에 항목 추가/수정
- * 2. 주차별 강의자료: weeks 배열의 해당 강(1강~15강) 항목에 files / links 추가
- * 3. 실제 파일은 ./materials/[과목폴더]/ 아래에 저장
+ * [자료 올리는 방법]
+ * 1. 올릴 파일(PDF, ipynb, zip 등)을 materials 폴더 아래 해당 과목 폴더에 복사
+ * 2. 아래에서 해당 과목과 해당 강의(예: 1강, 2강)를 찾아서 files: [ ... ] 에 파일 정보 입력
+ * 3. 저장 후 git add . -> git commit -m "자료 업데이트" -> git push
  */
 
-function generateBlankWeeks(folderName, sampleFileName) {
-  const weeks = [];
-  for (let i = 1; i <= 15; i++) {
-    const isFirst = i === 1;
-    weeks.push({
-      week: i,
-      topic: `${i}강`,
-      date: "",
-      summary: "",
-      status: isFirst ? "ready" : "upcoming",
-      files: isFirst ? [
-        {
-          name: `01강_강의자료.pdf`,
-          path: `./materials/${folderName}/${sampleFileName}`,
-          size: "PDF",
-          type: "pdf"
-        }
-      ] : [],
-      links: []
-    });
-  }
-  return weeks;
-}
-
 const COURSES_DATA = [
+  // ==========================================
+  // 과목 1: AI활용데이터사이언스기초 (화요일)
+  // ==========================================
   {
     id: "ai-datascience",
     name: "AI활용데이터사이언스기초",
@@ -57,8 +36,40 @@ const COURSES_DATA = [
         content: "매주 강의 시작 전 본 사이트에 강의자료가 업로드됩니다."
       }
     ],
-    weeks: generateBlankWeeks("ai-datascience", "AI활용데이터사이언스기초-탐색적데이터분석-20260901.pdf")
+    weeks: [
+      {
+        week: 1,
+        topic: "1강",
+        date: "",
+        summary: "",
+        files: [
+          {
+            name: "01강_탐색적데이터분석.pdf",
+            path: "./materials/ai-datascience/AI활용데이터사이언스기초-탐색적데이터분석-20260901.pdf"
+          }
+        ],
+        links: []
+      },
+      { week: 2, topic: "2강", date: "", summary: "", files: [], links: [] },
+      { week: 3, topic: "3강", date: "", summary: "", files: [], links: [] },
+      { week: 4, topic: "4강", date: "", summary: "", files: [], links: [] },
+      { week: 5, topic: "5강", date: "", summary: "", files: [], links: [] },
+      { week: 6, topic: "6강", date: "", summary: "", files: [], links: [] },
+      { week: 7, topic: "7강", date: "", summary: "", files: [], links: [] },
+      { week: 8, topic: "8강", date: "", summary: "", files: [], links: [] },
+      { week: 9, topic: "9강", date: "", summary: "", files: [], links: [] },
+      { week: 10, topic: "10강", date: "", summary: "", files: [], links: [] },
+      { week: 11, topic: "11강", date: "", summary: "", files: [], links: [] },
+      { week: 12, topic: "12강", date: "", summary: "", files: [], links: [] },
+      { week: 13, topic: "13강", date: "", summary: "", files: [], links: [] },
+      { week: 14, topic: "14강", date: "", summary: "", files: [], links: [] },
+      { week: 15, topic: "15강", date: "", summary: "", files: [], links: [] }
+    ]
   },
+
+  // ==========================================
+  // 과목 2: 머신러닝을위한수학과파이썬기초 (목요일)
+  // ==========================================
   {
     id: "math-python",
     name: "머신러닝을위한수학과파이썬기초",
@@ -84,8 +95,40 @@ const COURSES_DATA = [
         content: "매주 강의 시작 전 본 사이트에 강의자료가 업로드됩니다."
       }
     ],
-    weeks: generateBlankWeeks("math-python", "week01_lecture.pdf")
+    weeks: [
+      {
+        week: 1,
+        topic: "1강",
+        date: "",
+        summary: "",
+        files: [
+          {
+            name: "01강_강의자료.pdf",
+            path: "./materials/math-python/week01_lecture.pdf"
+          }
+        ],
+        links: []
+      },
+      { week: 2, topic: "2강", date: "", summary: "", files: [], links: [] },
+      { week: 3, topic: "3강", date: "", summary: "", files: [], links: [] },
+      { week: 4, topic: "4강", date: "", summary: "", files: [], links: [] },
+      { week: 5, topic: "5강", date: "", summary: "", files: [], links: [] },
+      { week: 6, topic: "6강", date: "", summary: "", files: [], links: [] },
+      { week: 7, topic: "7강", date: "", summary: "", files: [], links: [] },
+      { week: 8, topic: "8강", date: "", summary: "", files: [], links: [] },
+      { week: 9, topic: "9강", date: "", summary: "", files: [], links: [] },
+      { week: 10, topic: "10강", date: "", summary: "", files: [], links: [] },
+      { week: 11, topic: "11강", date: "", summary: "", files: [], links: [] },
+      { week: 12, topic: "12강", date: "", summary: "", files: [], links: [] },
+      { week: 13, topic: "13강", date: "", summary: "", files: [], links: [] },
+      { week: 14, topic: "14강", date: "", summary: "", files: [], links: [] },
+      { week: 15, topic: "15강", date: "", summary: "", files: [], links: [] }
+    ]
   },
+
+  // ==========================================
+  // 과목 3: 피지컬컴퓨팅과AI융합교육실무 (목요일)
+  // ==========================================
   {
     id: "physical-ai",
     name: "피지컬컴퓨팅과AI융합교육실무",
@@ -111,6 +154,34 @@ const COURSES_DATA = [
         content: "매주 강의 시작 전 본 사이트에 강의자료가 업로드됩니다."
       }
     ],
-    weeks: generateBlankWeeks("physical-ai", "week01_lecture.pdf")
+    weeks: [
+      {
+        week: 1,
+        topic: "1강",
+        date: "",
+        summary: "",
+        files: [
+          {
+            name: "01강_강의자료.pdf",
+            path: "./materials/physical-ai/week01_lecture.pdf"
+          }
+        ],
+        links: []
+      },
+      { week: 2, topic: "2강", date: "", summary: "", files: [], links: [] },
+      { week: 3, topic: "3강", date: "", summary: "", files: [], links: [] },
+      { week: 4, topic: "4강", date: "", summary: "", files: [], links: [] },
+      { week: 5, topic: "5강", date: "", summary: "", files: [], links: [] },
+      { week: 6, topic: "6강", date: "", summary: "", files: [], links: [] },
+      { week: 7, topic: "7강", date: "", summary: "", files: [], links: [] },
+      { week: 8, topic: "8강", date: "", summary: "", files: [], links: [] },
+      { week: 9, topic: "9강", date: "", summary: "", files: [], links: [] },
+      { week: 10, topic: "10강", date: "", summary: "", files: [], links: [] },
+      { week: 11, topic: "11강", date: "", summary: "", files: [], links: [] },
+      { week: 12, topic: "12강", date: "", summary: "", files: [], links: [] },
+      { week: 13, topic: "13강", date: "", summary: "", files: [], links: [] },
+      { week: 14, topic: "14강", date: "", summary: "", files: [], links: [] },
+      { week: 15, topic: "15강", date: "", summary: "", files: [], links: [] }
+    ]
   }
 ];
