@@ -1,10 +1,5 @@
 /**
  * 동국대학교 교육대학원 2026학년도 강의자료 데이터
- * 
- * [자료 올리는 방법]
- * 1. 올릴 파일(PDF, ipynb, zip 등)을 materials 폴더 아래 해당 과목 폴더에 복사
- * 2. 아래에서 해당 과목과 해당 강의(예: 1강, 2강)를 찾아서 files: [ ... ] 에 파일 정보 입력
- * 3. 저장 후 git add . -> git commit -m "자료 업데이트" -> git push
  */
 
 const COURSES_DATA = [
@@ -50,6 +45,7 @@ const COURSES_DATA = [
         ],
         links: []
       },
+      // 👇 2강에 자료를 넣으실 때는 이 부분을 수정하시면 됩니다!
       { week: 2, topic: "2강", date: "", summary: "", files: [], links: [] },
       { week: 3, topic: "3강", date: "", summary: "", files: [], links: [] },
       { week: 4, topic: "4강", date: "", summary: "", files: [], links: [] },
