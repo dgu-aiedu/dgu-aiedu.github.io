@@ -57,7 +57,7 @@ const COURSES_DATA = [
         content: "매주 강의 시작 전 본 사이트에 강의자료가 업로드됩니다."
       }
     ],
-    weeks: generateBlankWeeks("ai-datascience", "week01_lecture.pdf")
+    weeks: generateBlankWeeks("ai-datascience", "AI활용데이터사이언스기초-탐색적데이터분석-20260901.pdf")
   },
   {
     id: "math-python",
