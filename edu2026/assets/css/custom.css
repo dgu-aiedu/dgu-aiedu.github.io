@@ -1,0 +1,75 @@
+/* Dongguk University Brand Palette & Custom Styles */
+:root {
+  --dgu-orange: #D9531E;
+  --dgu-orange-dark: #B83E0F;
+  --dgu-orange-light: #FFF2EB;
+  --dgu-navy: #1E293B;
+  --dgu-bg: #F8FAFC;
+}
+
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  background-color: var(--dgu-bg);
+  color: #1E293B;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Smooth Tab Transitions */
+.tab-btn {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-btn.active {
+  color: #D9531E;
+  border-color: #D9531E;
+  background-color: #FFF7ED;
+}
+
+/* Glassmorphism / Card Hover */
+.course-card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.course-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
+/* Notice Box Pulse Accent */
+.notice-pinned-badge {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+}
+
+/* Week Card Accordion / Hover */
+.week-card {
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.week-card:hover {
+  border-color: #CBD5E1;
+}
+
+/* Print Styles */
+@media print {
+  header, footer, .tab-navigation, .download-btn {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}

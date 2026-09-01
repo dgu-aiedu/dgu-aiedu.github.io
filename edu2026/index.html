@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>동국대학교 교육대학원 강의자료 포털 (2026)</title>
+  <meta name="description" content="동국대학교 교육대학원 AI융합교육전공 2026학년도 강의자료 및 공지사항 안내 사이트입니다.">
+  
+  <!-- Pretendard Font -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dgu: {
+              orange: '#D9531E',
+              'orange-dark': '#B83E0F',
+              'orange-light': '#FFF2EB',
+              navy: '#1E293B',
+              bg: '#F8FAFC'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="./assets/css/custom.css">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col selection:bg-orange-500 selection:text-white">
+
+  <!-- 상단 글로벌 네비게이션 헤더 -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- 로고 및 포털 타이틀 -->
+      <a href="./" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white shadow-sm font-black text-lg tracking-wider">
+          DGU
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-[11px] font-bold text-orange-600 bg-orange-50 px-1.5 py-0.5 rounded border border-orange-200/60">
+              교육대학원
+            </span>
+            <span class="text-xs font-semibold text-slate-400">2026학년도 2학기</span>
+          </div>
+          <h1 class="text-base sm:text-lg font-extrabold text-slate-900 leading-tight group-hover:text-orange-600 transition-colors">
+            AI융합교육 강의자료 포털
+          </h1>
+        </div>
+      </a>
+
+      <!-- 우측 빠른 메뉴 -->
+      <div class="flex items-center gap-2 text-xs font-medium text-slate-600">
+        <a 
+          href="https://github.com/dgu-aiedu/edu2026" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+        >
+          <i data-lucide="github" class="w-4 h-4"></i>
+          <span>GitHub 저장소</span>
+        </a>
+        <button 
+          onclick="window.print()" 
+          class="p-2 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-900 transition-colors" 
+          title="인쇄"
+        >
+          <i data-lucide="printer" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 히어로 배너 -->
+  <section class="bg-gradient-to-b from-white via-orange-50/20 to-slate-50 pt-8 pb-6 border-b border-slate-200/70">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100/80 text-orange-800 text-xs font-bold mb-3 border border-orange-200">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-orange-600"></i>
+            동국대학교 교육대학원 AI융합교육전공
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            이번 학기 개설 교과목 및 주차별 강의자료
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600 mt-2 max-w-2xl leading-relaxed">
+            수업 시작 전 매주 강의안(PDF)과 실습 코드가 본 포털에 업데이트됩니다.<br class="hidden sm:inline">
+            아래 과목 카드를 선택하시면 각 과목의 <strong>공지사항</strong> 및 <strong>주차별 자료 다운로드 링크</strong>를 확인하실 수 있습니다.
+          </p>
+        </div>
+
+        <!-- 학기 안내 퀵 박스 -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4 shrink-0">
+          <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600">
+            <i data-lucide="book-open" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-slate-400">개설 과목수</div>
+            <div class="text-xl font-extrabold text-slate-900">총 3개 과목</div>
+            <div class="text-xs text-orange-600 font-medium">화요일 1과목 / 목요일 2과목</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 과목 선택 탭 그리드 -->
+      <div class="mt-8">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
+          <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+          과목을 선택하세요
+        </h3>
+        <div id="course-tabs" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <!-- JS 동적 렌더링 -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 메인 과목 세부 뷰 영역 -->
+  <main id="main-course-view" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+    
+    <!-- 1. 선택된 과목 기본 정보 카드 -->
+    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm mb-8">
+      <div id="course-header-info">
+        <!-- JS 동적 렌더링 -->
+      </div>
+    </div>
+
+    <!-- 2단 레이아웃 그리드 (좌측: 공지사항 / 우측: 주차별 자료) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- [좌측 4컬럼] 과목 공지사항 영역 -->
+      <section class="lg:col-span-4 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="megaphone" class="w-5 h-5 text-orange-500"></i>
+            과목 공지사항
+          </h3>
+          <span class="text-xs text-slate-400">Notice</span>
+        </div>
+
+        <div id="course-notices-list" class="space-y-3">
+          <!-- JS 동적 렌더링 -->
+        </div>
+
+        <!-- 빠른 안내 팁 카드 -->
+        <div class="p-4 rounded-xl bg-orange-50/70 border border-orange-200/80 text-xs text-orange-950 space-y-1.5">
+          <div class="font-bold flex items-center gap-1.5 text-orange-800">
+            <i data-lucide="info" class="w-4 h-4 text-orange-600"></i>
+            수강생 안내사항
+          </div>
+          <p class="leading-relaxed text-orange-900">
+            강의 자료는 PDF 형식으로 제공되며 모바일 및 태블릿에서도 바로 열람하실 수 있습니다. 실습 소스코드는 파일명을 클릭하여 다운로드하세요.
+          </p>
+        </div>
+      </section>
+
+      <!-- [우측 8컬럼] 주차별 강의자료 및 다운로드 영역 -->
+      <section class="lg:col-span-8 space-y-4">
+        
+        <!-- 자료 컨트롤 바 (검색 및 필터) -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200">
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="folder-down" class="w-5 h-5 text-orange-500"></i>
+              주차별 강의자료
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">1주차 ~ 15주차 강의 계획 및 자료 다운로드</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- 상태 필터 -->
+            <div class="inline-flex rounded-lg border border-slate-200 bg-slate-100 p-0.5 text-xs">
+              <button 
+                data-filter="all" 
+                class="status-filter-btn active-filter px-3 py-1.5 rounded-md font-medium bg-slate-900 text-white transition-all"
+              >
+                전체
+              </button>
+              <button 
+                data-filter="ready" 
+                class="status-filter-btn px-3 py-1.5 rounded-md font-medium text-slate-600 hover:text-slate-900 transition-all"
+              >
+                다운로드 가능
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 검색창 -->
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="주차, 강의 주제, 핵심 키워드로 검색 (예: 파이썬, 1주차)"
+            class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+          >
+        </div>
+
+        <!-- 주차별 리스트 렌더링 컨테이너 -->
+        <div id="weekly-materials-list" class="space-y-3.5">
+          <!-- JS 동적 렌더링 -->
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="bg-white border-t border-slate-200 mt-16 py-8 text-slate-500 text-xs">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-extrabold text-slate-800">동국대학교 교육대학원</span>
+        <span class="text-slate-300">|</span>
+        <span>AI융합교육전공 2026학년도 강의자료실</span>
+      </div>
+      <div class="flex items-center gap-4 text-slate-400">
+        <span>호스팅: GitHub Pages</span>
+        <a href="https://dgu-aiedu.github.io/edu2026" class="text-orange-600 hover:underline">dgu-aiedu.github.io/edu2026</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 데이터 및 앱 스크립트 로드 -->
+  <script src="./assets/js/courses-data.js"></script>
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>
