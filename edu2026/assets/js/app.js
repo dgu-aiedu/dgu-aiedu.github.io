@@ -2,7 +2,6 @@
  * 동국대학교 교육대학원 2026 강의자료 포털 애플리케이션
  */
 
-// 현재 선택된 과목 ID 및 필터 상태
 let currentCourseId = COURSES_DATA[0].id;
 let currentFilter = "all"; // 'all' | 'ready'
 let searchQuery = "";
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCurrentCourse();
   setupEventListeners();
 
-  // Lucide 아이콘 초기화
   if (window.lucide) {
     lucide.createIcons();
   }
@@ -91,7 +89,6 @@ function switchCourse(courseId) {
   renderCourseTabs();
   renderCurrentCourse();
 
-  // 상단 스크롤 부드럽게 이동
   const mainContent = document.getElementById("main-course-view");
   if (mainContent) {
     mainContent.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -105,13 +102,8 @@ function renderCurrentCourse() {
   const course = COURSES_DATA.find(c => c.id === currentCourseId);
   if (!course) return;
 
-  // 1. 과목 헤더 정보 렌더링
   renderCourseHeader(course);
-
-  // 2. 공지사항 렌더링
   renderNotices(course);
-
-  // 3. 주차별 강의자료 렌더링
   renderWeeklyMaterials(course);
 
   if (window.lucide) {
@@ -131,7 +123,7 @@ function renderCourseHeader(course) {
       <div>
         <div class="flex flex-wrap items-center gap-2 mb-2">
           <span class="px-3 py-1 text-xs font-bold rounded-full ${course.color.badge}">
-            2026학년도 2학기
+            2026학년도
           </span>
           <span class="px-3 py-1 text-xs font-medium rounded-full bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1">
             <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-500"></i>
@@ -192,13 +184,13 @@ function renderNotices(course) {
           ${
             notice.isPinned
               ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-red-500 text-white">
-                  <i data-lucide="pin" class="w-3 h-3"></i> 중요 공지
+                  <i data-lucide="pin" class="w-3 h-3"></i> 공지
                  </span>`
               : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-600">
-                  <i data-lucide="info" class="w-3 h-3"></i> 일반
+                  <i data-lucide="info" class="w-3 h-3"></i> 안내
                  </span>`
           }
-          <span class="text-xs text-slate-400">${notice.date}</span>
+          ${notice.date ? `<span class="text-xs text-slate-400">${notice.date}</span>` : ''}
         </div>
         <h4 class="text-sm md:text-base font-bold text-slate-900 mb-1">
           ${notice.title}
@@ -218,17 +210,15 @@ function renderWeeklyMaterials(course) {
   const materialsContainer = document.getElementById("weekly-materials-list");
   if (!materialsContainer) return;
 
-  // 필터 및 검색 적용
   let filteredWeeks = course.weeks.filter(w => {
-    // 1. 상태 필터
-    if (currentFilter === "ready" && w.status !== "ready") return false;
+    const isReady = w.status === "ready" || (w.files && w.files.length > 0);
+    if (currentFilter === "ready" && !isReady) return false;
     
-    // 2. 검색어 필터
     if (searchQuery.trim() !== "") {
       const q = searchQuery.toLowerCase();
-      const matchTopic = w.topic.toLowerCase().includes(q);
-      const matchSummary = w.summary.toLowerCase().includes(q);
-      const matchWeek = `${w.week}주차`.includes(q) || `${w.week}주`.includes(q);
+      const matchTopic = (w.topic || "").toLowerCase().includes(q);
+      const matchSummary = (w.summary || "").toLowerCase().includes(q);
+      const matchWeek = `${w.week}강`.includes(q) || `${w.week}주`.includes(q);
       return matchTopic || matchSummary || matchWeek;
     }
     return true;
@@ -239,109 +229,101 @@ function renderWeeklyMaterials(course) {
       <div class="p-8 text-center text-slate-400 bg-white rounded-xl border border-slate-200">
         <i data-lucide="search-x" class="w-10 h-10 mx-auto mb-2 text-slate-300"></i>
         <p class="text-sm font-medium text-slate-600">조건에 맞는 강의자료가 없습니다.</p>
-        <p class="text-xs text-slate-400 mt-1">검색어를 변경하거나 필터를 초기화해 보세요.</p>
       </div>
     `;
     return;
   }
 
   materialsContainer.innerHTML = filteredWeeks.map(w => {
-    const isReady = w.status === "ready";
     const hasFiles = w.files && w.files.length > 0;
     const hasLinks = w.links && w.links.length > 0;
+    const isReady = w.status === "ready" || hasFiles || hasLinks;
 
     return `
-      <div class="week-card bg-white rounded-xl border ${isReady ? 'border-slate-300 shadow-sm' : 'border-slate-200/80 bg-slate-50/40'} p-5 transition-all">
-        <!-- 주차 상단 헤더 -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+      <div class="week-card bg-white rounded-xl border ${isReady ? 'border-slate-300 shadow-sm' : 'border-slate-200/70 bg-slate-50/40'} p-4 sm:p-5 transition-all">
+        <div class="flex items-center justify-between gap-3">
           <div class="flex items-center gap-3">
-            <span class="inline-flex items-center justify-center w-12 h-7 rounded-lg text-xs font-bold ${
+            <span class="inline-flex items-center justify-center min-w-[56px] h-8 px-3 rounded-lg text-xs font-extrabold ${
               isReady 
                 ? "bg-orange-600 text-white shadow-sm" 
                 : "bg-slate-200 text-slate-600"
             }">
-              ${w.week}주차
+              ${w.topic || `${w.week}강`}
             </span>
-            <span class="text-xs font-medium text-slate-400 flex items-center gap-1">
-              <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-              ${w.date}
-            </span>
+            ${w.date ? `
+              <span class="text-xs font-medium text-slate-400 flex items-center gap-1">
+                <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                ${w.date}
+              </span>
+            ` : ''}
           </div>
 
           <div>
             ${
               isReady
                 ? `<span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 자료 다운로드 가능
+                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> 자료 다운로드
                    </span>`
                 : `<span class="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200">
-                    <i data-lucide="clock-3" class="w-3.5 h-3.5"></i> 강의 전 업로드 예정
+                    <i data-lucide="clock-3" class="w-3.5 h-3.5"></i> 준비 중
                    </span>`
             }
           </div>
         </div>
 
-        <!-- 주차 주제 및 내용 -->
-        <div class="my-3">
-          <h4 class="text-base font-bold text-slate-900 flex items-center gap-2">
-            ${w.topic}
-          </h4>
-          <p class="text-xs md:text-sm text-slate-600 mt-1 leading-relaxed">
-            ${w.summary}
-          </p>
-        </div>
+        ${w.summary ? `
+          <div class="my-2.5">
+            <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+              ${w.summary}
+            </p>
+          </div>
+        ` : ''}
 
-        <!-- 첨부파일 및 외부링크 영역 -->
+        <!-- 첨부파일 및 링크 다운로드 영역 -->
         ${
-          isReady && (hasFiles || hasLinks)
+          hasFiles || hasLinks
             ? `
-              <div class="mt-4 pt-3 border-t border-slate-100">
-                <p class="text-xs font-semibold text-slate-500 mb-2 flex items-center gap-1.5">
-                  <i data-lucide="download-cloud" class="w-3.5 h-3.5 text-orange-500"></i>
-                  강의자료 & 실습 링크
-                </p>
-                <div class="flex flex-wrap gap-2.5">
-                  ${
-                    hasFiles
-                      ? w.files.map(file => `
-                          <a 
-                            href="${file.path}" 
-                            download 
-                            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50 hover:bg-orange-50 hover:border-orange-200 border border-slate-200 text-xs font-medium text-slate-700 hover:text-orange-600 transition-colors group shadow-2xs"
-                          >
-                            <i data-lucide="${getFileIcon(file.type)}" class="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform"></i>
-                            <span class="truncate max-w-[200px] sm:max-w-[280px]">${file.name}</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-600 group-hover:bg-orange-200 group-hover:text-orange-800 font-mono">${file.size || 'FILE'}</span>
-                          </a>
-                        `).join("")
-                      : ""
-                  }
-                  ${
-                    hasLinks
-                      ? w.links.map(link => `
-                          <a 
-                            href="${link.url}" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-xs font-medium text-blue-700 transition-colors shadow-2xs"
-                          >
-                            <i data-lucide="${getLinkIcon(link.type)}" class="w-4 h-4 text-blue-600"></i>
-                            <span>${link.title}</span>
-                            <i data-lucide="external-link" class="w-3 h-3 text-blue-400"></i>
-                          </a>
-                        `).join("")
-                      : ""
-                  }
-                </div>
+              <div class="mt-3 pt-3 border-t border-slate-100 flex flex-wrap gap-2">
+                ${
+                  hasFiles
+                    ? w.files.map(file => `
+                        <a 
+                          href="${file.path}" 
+                          download 
+                          class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50 hover:bg-orange-50 hover:border-orange-200 border border-slate-200 text-xs font-medium text-slate-700 hover:text-orange-600 transition-colors group shadow-2xs"
+                        >
+                          <i data-lucide="${getFileIcon(file.type)}" class="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform"></i>
+                          <span class="truncate max-w-[200px] sm:max-w-[280px]">${file.name}</span>
+                          <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-600 group-hover:bg-orange-200 group-hover:text-orange-800 font-mono">${file.size || 'FILE'}</span>
+                        </a>
+                      `).join("")
+                    : ""
+                }
+                ${
+                  hasLinks
+                    ? w.links.map(link => `
+                        <a 
+                          href="${link.url}" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-xs font-medium text-blue-700 transition-colors shadow-2xs"
+                        >
+                          <i data-lucide="${getLinkIcon(link.type)}" class="w-4 h-4 text-blue-600"></i>
+                          <span>${link.title}</span>
+                          <i data-lucide="external-link" class="w-3 h-3 text-blue-400"></i>
+                        </a>
+                      `).join("")
+                    : ""
+                }
               </div>
             `
             : `
-              <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+              <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
                 <span class="flex items-center gap-1.5">
                   <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-                  강의 시작 전 첨부파일이 등록됩니다.
+                  강의 시작 전 파일이 등록됩니다.
                 </span>
-                <span class="text-[11px] font-mono text-slate-400">Week ${w.week}</span>
+                <span class="text-[11px] font-mono text-slate-400">Lecture ${w.week}</span>
               </div>
             `
         }
@@ -350,9 +332,6 @@ function renderWeeklyMaterials(course) {
   }).join("");
 }
 
-/**
- * 파일 확장자/타입에 따른 아이콘 이름 반환
- */
 function getFileIcon(type) {
   switch (type) {
     case "pdf": return "file-text";
@@ -367,9 +346,6 @@ function getFileIcon(type) {
   }
 }
 
-/**
- * 링크 타입에 따른 아이콘 이름 반환
- */
 function getLinkIcon(type) {
   switch (type) {
     case "colab": return "play-circle";
@@ -379,9 +355,6 @@ function getLinkIcon(type) {
   }
 }
 
-/**
- * 검색 및 필터 이벤트 바인딩
- */
 function setupEventListeners() {
   const searchInput = document.getElementById("search-input");
   if (searchInput) {
@@ -395,7 +368,6 @@ function setupEventListeners() {
     });
   }
 
-  // 필터 버튼 (전체 / 다운로드 가능)
   const filterBtns = document.querySelectorAll(".status-filter-btn");
   filterBtns.forEach(btn => {
     btn.addEventListener("click", () => {
